@@ -26,7 +26,21 @@ public class StockManager
      */
     public void addProduct(Product item)
     {
-        stock.add(item);
+        boolean match;
+        Product testing = item;
+        for(Product checking : stock){
+            if(testing.getID() = checking.getID()) {
+                match = true;
+            }else {
+                match = false;
+            }
+        }
+        
+        if(match = false) {
+            stock.add(item);
+        }else {
+            System.out.println("Sorry, the product ID you entered already exists. Please enter a new one.");
+        }
     }
     
     /**
@@ -37,6 +51,11 @@ public class StockManager
      */
     public void delivery(int id, int amount)
     {
+        if(findProduct(id) != null) {
+            findProduct(id).increaseQuantity(amount);
+        }else {
+            System.out.println("That item ID cannot be found.");
+        }
     }
     
     /**
@@ -46,6 +65,24 @@ public class StockManager
      */
     public Product findProduct(int id)
     {
+        for(Product checking : stock) {
+            if(checking.getID() == id) {
+                return checking;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Find a product using only its name and return that products details.
+     * @return The identified product, or null if thre is none with a matching name.
+     */
+    public Product findProduct(String name) {
+        for(Product checking : stock) {
+            if(name.equals(checking.getName())){
+                return checking;
+            }
+        }
         return null;
     }
     
@@ -58,7 +95,11 @@ public class StockManager
      */
     public int numberInStock(int id)
     {
+        if(findProduct(id) != null) {
+            return findProduct(id).getQuantity();
+        }else {
         return 0;
+    }
     }
 
     /**
@@ -66,5 +107,20 @@ public class StockManager
      */
     public void printProductDetails()
     {
+        for(Product detail : stock) {
+            System.out.println(detail.toString());
+        }
     }
+    
+    /**
+     * Prints details of all products with stock level below given value.
+     */
+    public void printCertainLevels(int level) {
+        
+        for(Product detail : stock) {
+            if(detail.getQuantity() < level) {
+                System.out.println(detail.toString());
+        }
+    }
+}
 }
